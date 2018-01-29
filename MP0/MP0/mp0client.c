@@ -10,7 +10,8 @@
 
 #include <arpa/inet.h>
 
-#define MAXDATASIZE 100 // max number of bytes we can get at once 
+#define MAXDATASIZE 1024 // max number of bytes we can get at once 
+#define MSGNUMB 10
 void *get_in_addr(struct sockaddr *sa)
 {
 	if(sa->sa_family == AF_INET){
@@ -28,6 +29,7 @@ int main(int argc, char*argv[])
 	char s[INET6_ADDRSTRLEN];
 	int numbytes;
 	char buf[MAXDATASIZE];
+	int i;
 
 	if(argc != 4){
 		fprintf(stderr, "usage:client inputs\n");
@@ -64,9 +66,9 @@ int main(int argc, char*argv[])
 		return 2;
 	}
 
-	inet_ntop(p->ai_family, get_in_addr((struct sockaddr *)p->ai_addr),
-			s, sizeof s);
-	printf("client: connecting to %s\n", s);	
+	// inet_ntop(p->ai_family, get_in_addr((struct sockaddr *)p->ai_addr),
+	// 		s, sizeof s);
+	// printf("client: connecting to %s\n", s);	
 
 	freeaddrinfo(servinfo);
 
@@ -81,8 +83,40 @@ int main(int argc, char*argv[])
 	}
 	buf[numbytes] = '\0';
 
-	printf("client: received '%s'\n", buf);
+	// printf("client: received %s\n", buf);
 
+	if (send(sockfd, "USERNAME cwu57\n", strlen("USERNAME cwu57\n"), 0) == -1)
+		perror("send");
+
+	if((numbytes = recv(sockfd, buf, MAXDATASIZE-1, 0)) == -1){
+		perror("recv");
+		exit(1);
+	}
+
+	for(i = 0; i < MSGNUMB; i++){
+		if (send(sockfd, "RECV\n", strlen("RECV\n"), 0) == -1)
+			perror("send");
+		if((numbytes = recv(sockfd, buf, MAXDATASIZE-1, 0)) == -1){
+			perror("recv");
+			exit(1);
+		}
+		buf[numbytes] = '\0';
+
+		printf("Received: %s", &buf[12]);
+	}
+
+		//only for testing
+	if (send(sockfd, "BYE\n", strlen("BYE\n"), 0) == -1)
+		perror("send");
+	
+
+	if((numbytes = recv(sockfd, buf, MAXDATASIZE-1, 0)) == -1){
+		perror("recv");
+		exit(1);
+	}
+	buf[numbytes] = '\0';
+
+	close(sockfd);
 	return 0;
 
 }
