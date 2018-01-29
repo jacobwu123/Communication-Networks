@@ -1,0 +1,14 @@
+
+MP0/MP0/server.dSYM/Contents/Resources/DWARF/server
+MP0/MP0/mp0client.dSYM/Contents/Resources/DWARF/mp0client
+MP0/MP0/server.dSYM/Contents/Info.plist
+*.plist
+MP0/MP0/talker.dSYM/Contents/Resources/DWARF/talker
+MP0/.DS_Store
+MP0/MP0/.DS_Store
+MP0/MP0/.svn/entries
+MP0/MP0/.svn/format
+*.svn-base
+*.db
+MP0/MP0/client.dSYM/Contents/Resources/DWARF/client
+MP0/MP0/listener.dSYM/Contents/Resources/DWARF/listener

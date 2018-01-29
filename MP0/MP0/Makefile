@@ -16,7 +16,7 @@ CC_ARGS=${CC_OPTS} ${CC_LIBS} ${CC_DEFINES} ${CC_INCLUDES}
 .PHONY=clean
 
 #target "all" depends on all others
-all: client server listener talker
+all: client server listener talker mp0client
 
 # client C depends on source file client.c, if that changes, make client will 
 # rebuild the binary
@@ -31,6 +31,9 @@ talker: talker.c
 
 server: server.c
 	@${CC} ${CC_ARGS} -o server server.c
+
+mp0client: mp0client.c
+	@${CC} ${CC_ARGS} -o mp0client mp0client.c
 	
 clean:
-	@rm -f talker server client listener *.o
+	@rm -f talker server client listener mp0client *.o
